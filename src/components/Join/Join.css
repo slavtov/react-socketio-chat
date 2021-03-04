@@ -1,0 +1,28 @@
+.join,
+.join-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.join {
+  align-items: center;
+  min-height: calc(100vh - 205px);
+}
+
+.join-content {
+  width: 50%;
+}
+
+.join-input {
+  margin: 14px 0;
+  padding: 10px 10px;
+  border: 1px solid #ccc;
+  border-radius: .5em;
+}
+
+@media screen and (max-width: 575px) {
+  .join-content {
+    width: 100%;
+  }
+}

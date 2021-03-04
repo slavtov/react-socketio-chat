@@ -1,0 +1,14 @@
+.btn {
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+
+.btn-sm {
+  padding: 5px 7px;
+}
+
+.btn-md {
+  padding: 10px 20px;
+  font-size: 1em;
+}

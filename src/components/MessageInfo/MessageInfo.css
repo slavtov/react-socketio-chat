@@ -1,0 +1,19 @@
+.message-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.message-username,
+.message-time {
+  color: #7e7e7e;
+}
+
+.message-username {
+  margin-right: 5px;
+  font-size: .8em;
+}
+
+.message-time {
+  font-size: .7em;
+}
