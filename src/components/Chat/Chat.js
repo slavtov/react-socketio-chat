@@ -1,8 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import PropTypes from 'prop-types'
 import { io } from 'socket.io-client'
 import Button from '../Button/Button'
 import Message from '../Message/Message'
+import User from '../User'
 import './Chat.css'
 
 const socket = io(process.env.REACT_APP_ENDPOINT, { autoConnect: false })
@@ -15,6 +22,7 @@ const Chat = ({ username }) => {
   const [users, setUsers] = useState([])
   const inputRef = useRef()
 
+  const handleChange = event => setMessage(event.target.value)
   const handleSubmit = event => {
     event.preventDefault()
 
@@ -25,12 +33,12 @@ const Chat = ({ username }) => {
     inputRef.current.focus()
   }
 
-  const handleClick = item => {
+  const handleClick = useCallback(item => {
     if (item !== room) {
       socket.emit('new room', item)
       setRoom(item)
     }
-  }
+  }, [room])
 
   useEffect(() => {
     socket.connect()
@@ -45,6 +53,14 @@ const Chat = ({ username }) => {
 
     inputRef.current.focus()
   }, [username])
+
+  const memoizedUsers = useMemo(() => users.map(user => (
+    <User
+      key={user.id}
+      item={user}
+      style={{ fontWeight: user.id === socket.id && 'bold' }}
+    />
+  )), [users])
 
   return (
     <div>
@@ -67,7 +83,7 @@ const Chat = ({ username }) => {
           <form onSubmit={handleSubmit} className="chat-form">
             <input
               ref={inputRef}
-              onChange={event => setMessage(event.target.value)}
+              onChange={handleChange}
               value={message}
               type="text"
               className="chat-input"
@@ -97,14 +113,7 @@ const Chat = ({ username }) => {
             <h2 className="users-title">Users ({users.length})</h2>
 
             <div className="users">
-              {useMemo(() => users.map(user => (
-                <p
-                  key={user.id}
-                  style={{ fontWeight: user.id === socket.id && 'bold' }}
-                >
-                  {user.username}
-                </p>
-              )), [users])}
+              {memoizedUsers}
             </div>
           </div>
         </div>
